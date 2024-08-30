@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "blogging-site"
+version = "0.1.0"
+description = ""
+authors = ["adilmaqsood1 <126709358+adilmaqsood1@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.112.2"
+uvicorn = {extras = ["standard"], version = "^0.30.6"}
+jinja2 = "^3.1.4"
+python-multipart = "^0.0.9"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

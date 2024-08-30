@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>All Posts</h2>
+    <ul>
+        {% for post_id, post in posts.items() %}
+            <li>
+                <a href="/post/{{ post_id }}">{{ post.title }}</a> 
+                <a href="/edit-post/{{ post_id }}">[Edit]</a> 
+                <a href="/delete-post/{{ post_id }}" onclick="return confirm('Are you sure?');">[Delete]</a>
+            </li>
+        {% else %}
+            <li>No posts yet!</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
