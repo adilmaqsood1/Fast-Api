@@ -9,7 +9,7 @@ import uuid
 app = FastAPI()
 
 # Set up template and static file directories
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 # In-memory "database" of posts (for simplicity)
