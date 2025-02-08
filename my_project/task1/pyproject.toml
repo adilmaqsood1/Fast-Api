@@ -1,14 +1,12 @@
 [tool.poetry]
-name = "fast"
+name = "task1"
 version = "0.1.0"
 description = ""
-authors = ["adilmaqsood1 <126709358+adilmaqsood1@users.noreply.github.com>"]
+authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-requests = "^2.32.3"
-pytest = "^8.3.2"
 
 
 [build-system]
