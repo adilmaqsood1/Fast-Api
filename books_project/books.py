@@ -1,9 +1,10 @@
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI, HTTPException, Depends, status, Query
 from pydantic import BaseModel, Field
 import models
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from logging import logger
+from typing import List
 
 app = FastAPI()
 
@@ -34,7 +35,8 @@ BOOKS = []
          description="every book which is in database is gonna show over here",
          status_code=status.HTTP_200_OK)
 
-def read_api(db: Session = Depends(get_db)):
+def read_api(db: Session = Depends(get_db),
+             read_books: str = Query(None, title="Read all books")) -> List[models.Books]:
     logger.info("Reading all books")
     return db.query(models.Books).all()
 
@@ -46,7 +48,12 @@ def read_api(db: Session = Depends(get_db)):
           status_code=status.HTTP_201_CREATED
           )
 
-def create_book(book: Book, db: Session = Depends(get_db)):
+def create_book(book: Book, db: Session = Depends(get_db),
+                create_book: str = Query(None, title="Create a book"),
+                create_author: str = Query(None, title="Create a author"),
+                create_description: str = Query(None, title="Create a description"),
+                create_rating: int = Query(None, title="Create a rating")
+):
     logger.info(f"Creating book: {book.title}")
     book_model = models.Books()
     book_model.title = book.title
@@ -66,7 +73,12 @@ def create_book(book: Book, db: Session = Depends(get_db)):
          description="Update a book with title, author, description and rating",
          status_code=status.HTTP_200_OK
          )
-def update_book(book_id: int, book: Book, db: Session = Depends(get_db)):
+def update_book(book_id: int, book: Book, db: Session = Depends(get_db),
+                update_book: str = Query(None, title="Update a book"),
+                update_author: str = Query(None, title="Update a author"),
+                update_description: str = Query(None, title="Update a description"),
+                update_rating: int = Query(None, title="Update a rating")
+                ):
 
     book_model = db.query(models.Books).filter(models.Books.id == book_id).first()
 
@@ -93,7 +105,9 @@ def update_book(book_id: int, book: Book, db: Session = Depends(get_db)):
             description="Delete a book with title, author, description and rating",
             status_code=status.HTTP_200_OK
             )
-def delete_book(book_id: int, db: Session = Depends(get_db)):
+def delete_book(book_id: int, db: Session = Depends(get_db),
+                delete_book: str = Query(None, title="Delete a book")
+                ):
 
     book_model = db.query(models.Books).filter(models.Books.id == book_id).first()
 
