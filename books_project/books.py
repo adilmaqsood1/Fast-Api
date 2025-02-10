@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, status
 from pydantic import BaseModel, Field
 import models
 from database import engine, SessionLocal
@@ -28,13 +28,24 @@ class Book(BaseModel):
 BOOKS = []
 
 
-@app.get("/")
+@app.get("/",
+         tags= ["Books"],
+         summary="Read all books",
+         description="every book which is in database is gonna show over here",
+         status_code=status.HTTP_200_OK)
+
 def read_api(db: Session = Depends(get_db)):
     logger.info("Reading all books")
     return db.query(models.Books).all()
 
 
-@app.post("/")
+@app.post("/",
+          tags= ["create_book"],
+          summary="Create a book",
+          description="Create a book with title, author, description and rating",
+          status_code=status.HTTP_201_CREATED
+          )
+
 def create_book(book: Book, db: Session = Depends(get_db)):
     logger.info(f"Creating book: {book.title}")
     book_model = models.Books()
@@ -49,7 +60,12 @@ def create_book(book: Book, db: Session = Depends(get_db)):
     return book
 
 
-@app.put("/{book_id}")
+@app.put("/{book_id}",
+         tags= ["update_book"],
+         summary="Update a book",
+         description="Update a book with title, author, description and rating",
+         status_code=status.HTTP_200_OK
+         )
 def update_book(book_id: int, book: Book, db: Session = Depends(get_db)):
 
     book_model = db.query(models.Books).filter(models.Books.id == book_id).first()
@@ -71,7 +87,12 @@ def update_book(book_id: int, book: Book, db: Session = Depends(get_db)):
     return book
 
 
-@app.delete("/{book_id}")
+@app.delete("/{book_id}",
+            tags= ["delete_book"],
+            summary="Delete a book",
+            description="Delete a book with title, author, description and rating",
+            status_code=status.HTTP_200_OK
+            )
 def delete_book(book_id: int, db: Session = Depends(get_db)):
 
     book_model = db.query(models.Books).filter(models.Books.id == book_id).first()
